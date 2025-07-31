@@ -7,10 +7,10 @@ from io import BytesIO
 
 def get_random_dog_image():
     try:
-        response = requests.get('https://dog.ceo/api/breeds/image/random')
-        response.raise_for_status()
-        data = response.json()
-        return data['message']
+        response = requests.get('https://dog.ceo/api/breeds/image/random') # на запрос получаем из интернета по ссылке
+        response.raise_for_status()  # получаем статус (если 200 ок)
+        data = response.json() # в data -> положили ответ в формате JSON
+        return data['message']  # возвращаем информацию по ключу 'message'
     except Exception as e:
         messagebox.showerror("Ошибка", f"Ошибка при запросе к API: {e}")
         return None
@@ -30,6 +30,7 @@ def show_image():
 
         except requests.RequestException as e:
             messagebox.showerror("Ошибка", f"Не удалось загрузить изображение: {e}")
+
 
 window = Tk()
 window.title("Картинки с собачками")
