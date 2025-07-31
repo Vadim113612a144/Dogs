@@ -23,10 +23,16 @@ def show_image():
             response.raise_for_status() # обрабатываем ошибки
             img_data = BytesIO(response.content)  # загружаем контент в двоич коде
             img = Image.open(img_data) # ложим в img картинку
-            img.thumbnail((300, 300))  # размер картинкти
+
+            img_size = (int(width_spinbox.get()), int(height_spinbox.get()))
+            img.thumbnail(img_size)  # размер картинкти из spinbox.get()
             img = ImageTk.PhotoImage(img) # v Photo
-            label.config(image=img)  # в лейбл картинку
-            label.image = img  # чтоб не собрал мусор
+
+            new_window = Toplevel(window) # выводим новое окно
+            new_window.title("Случайное изображение пёсика") # заголовок нового окна
+            lb = ttk.Label(new_window, image=img) # изображение в новое око
+            lb.pack()
+            lb.image = img  # чтоб не собрал мусор
 
         except requests.RequestException as e:
             messagebox.showerror("Ошибка", f"Не удалось загрузить изображение: {e}")
@@ -56,5 +62,18 @@ button.pack(padx=10, pady=10) # otstup
 # Используем ttk.Progressbar для индикации загрузки
 progress = ttk.Progressbar(mode='determinate', length=300)
 progress.pack(padx=10, pady=10)
+
+# Ширина
+width_label = ttk.Label(text="Ширина:")
+width_label.pack(side='left', padx=(10, 0))
+width_spinbox = ttk.Spinbox(from_=200, to=500, increment=50, width=5)
+width_spinbox.pack(side='left', padx=(0, 10))
+
+# Высота
+height_label = ttk.Label(text="Высота:")
+height_label.pack(side='left', padx=(10, 0))
+height_spinbox = ttk.Spinbox(from_=200, to=500, increment=50, width=5)
+height_spinbox.pack(side='left', padx=(0, 10))
+
 
 window.mainloop()
